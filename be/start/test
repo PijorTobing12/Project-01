@@ -1,0 +1,143 @@
+/*
+|--------------------------------------------------------------------------
+| Routes
+|--------------------------------------------------------------------------
+|
+| This file is dedicated for defining HTTP routes. A single file is enough
+| for majority of projects, however you can define routes in different
+| files and just make sure to import them inside this file. For example
+|
+| Define routes in following two files
+| ├── start/routes/cart.ts
+| ├── start/routes/customer.ts
+|
+| and then import them inside `start/routes.ts` as follows
+|
+| import './routes/cart'
+| import './routes/customer'
+|
+*/
+
+import Route from "@ioc:Adonis/Core/Route";
+
+Route.get("/", async () => {
+  return { hello: "world" };
+});
+
+// Route.post("/login", async () => {
+//   return { hello: "world" };
+// });
+
+Route.post("refresh_token", "master/UserController.refresh_token");
+Route.post("login", "master/UserController.login");
+Route.post("loginvendor", "etransport/VendorController.loginvendor");
+
+Route.get("getMenuAplikasiByUser",  "master/OtherController.getMenuAplikasiByUser");
+Route.get("getMenuAplikasi",  "master/OtherController.getMenuAplikasi");
+Route.post("saveAkses",  "master/OtherController.saveAkses");
+
+// Route.group(() =>
+// {
+//   Route.get("getUser", "master/UserController.getUser");
+// }).middleware('auth') 
+
+Route.get("getUser", "master/UserController.getUser");
+
+Route.get("getHrisByNIK", "master/UserController.getHrisByNIK");
+Route.get("getHrisByNIKuser", "master/UserController.getHrisByNIKuser");
+Route.post("saveUser", "master/UserController.saveUser");
+Route.post("deleteUser", "master/UserController.deleteUser");
+
+Route.get("getDomain", "master/DomainController.getDomain");
+Route.post("saveDomain", "master/DomainController.saveDomain");
+Route.post("deleteDomain", "master/DomainController.deleteDomain");
+
+Route.get("getSite", "master/SiteController.getSite");
+Route.post("saveSite", "master/SiteController.saveSite");
+Route.post("deleteSite", "master/SiteController.deleteSite");
+
+Route.get("getAplikasi", "master/AplikasiController.getAplikasi");
+Route.post("saveAplikasi", "master/AplikasiController.saveAplikasi");
+Route.post("deleteAplikasi", "master/AplikasiController.deleteAplikasi");
+
+Route.get("getMenu", "master/MenuController.getMenu");
+Route.post("saveMenu", "master/MenuController.saveMenu");
+Route.post("deleteMenu", "master/MenuController.deleteMenu");
+
+Route.get("getMappingRegion", "etransport/MappingRegionController.getMappingRegion");
+Route.post("saveMappingRegion", "etransport/MappingRegionController.saveMappingRegion");
+Route.post("saveEditMappingRegion", "etransport/MappingRegionController.saveEditMappingRegion");
+Route.post("deleteMappingRegion", "etransport/MappingRegionController.deleteMappingRegion");
+
+Route.get("getPICApproval", "etransport/PICApprovalController.getPICApproval");
+Route.post("savePICApproval", "etransport/PICApprovalController.savePICApproval");
+Route.post("saveEditPICApproval", "etransport/PICApprovalController.saveEditPICApproval");
+Route.post("deletePICApproval", "etransport/PICApprovalController.deletePICApproval");
+
+Route.get("getPengajuanHarga", "etransport/PengajuanHargaController.getPengajuanHarga");
+Route.get("getLokasiMuat", "etransport/PengajuanHargaController.getLokasiMuat");
+Route.get("getLokasiMuatEDIT", "etransport/PengajuanHargaController.getLokasiMuatEDIT");
+Route.get("getLokasiTujuan", "etransport/PengajuanHargaController.getLokasiTujuan");
+Route.post("savePengajuanHarga", "etransport/PengajuanHargaController.savePengajuanHarga");
+Route.post("sendPengajuanHarga", "etransport/PengajuanHargaController.sendPengajuanHarga");
+Route.post("saveEditPengajuanHarga", "etransport/PengajuanHargaController.saveEditPengajuanHarga");
+Route.post("deletePengajuanHarga", "etransport/PengajuanHargaController.deletePengajuanHarga");
+Route.get("getDetailPengajuan", "etransport/PengajuanHargaController.getDetailPengajuan");
+
+Route.get("getNegoHarga", "etransport/NegoHargaController.getNegoHarga");
+Route.get("getDetailNegoHarga", "etransport/NegoHargaController.getDetailNegoHarga");
+Route.post("saveNegoHarga", "etransport/NegoHargaController.saveNegoHarga");
+Route.get("updStatusDetail", "etransport/NegoHargaController.updStatusDetail");
+
+Route.get("getPengajuanApprovalHarga", "etransport/PengajuanApprovalHargaController.getPengajuanApprovalHarga");
+Route.post("generatePengajuanApproval", "etransport/PengajuanApprovalHargaController.generatePengajuanApproval");
+Route.post("savePengajuanApprovalHarga", "etransport/PengajuanApprovalHargaController.savePengajuanApprovalHarga");
+Route.post("deletePengajuanApprovalHarga", "etransport/PengajuanApprovalHargaController.deletePengajuanApprovalHarga");
+Route.post("viewPengajuanApprovalHarga", "etransport/PengajuanApprovalHargaController.viewPengajuanApprovalHarga");
+Route.post("regeneratePengajuanApprovalHarga", "etransport/PengajuanApprovalHargaController.regeneratePengajuanApprovalHarga");
+Route.post("saveRegeneratePengajuanApprovalHarga", "etransport/PengajuanApprovalHargaController.saveRegeneratePengajuanApprovalHarga");
+Route.post("sendPengajuanApprovalHarga", "etransport/PengajuanApprovalHargaController.sendPengajuanApprovalHarga");
+
+Route.get("getApprovalHargaTransporter", "etransport/ApprovalHargaTransporterController.getApprovalHargaTransporter");
+Route.post("prosesApprovalHargaTransporter", "etransport/ApprovalHargaTransporterController.prosesApprovalHargaTransporter");
+Route.post("approveApprovalHargaTransporter", "etransport/ApprovalHargaTransporterController.approveApprovalHargaTransporter");
+Route.post("saveRejectApprovalHargaTransporter", "etransport/ApprovalHargaTransporterController.saveRejectApprovalHargaTransporter");
+
+Route.get("getDataPengajuanApproval", "etransport/DataPengajuanApprovalController.getDataPengajuanApproval");
+Route.post("viewDataPengajuanApproval", "etransport/DataPengajuanApprovalController.viewDataPengajuanApproval");
+Route.post("downloadexcelDataPengajuanApproval", "etransport/DataPengajuanApprovalController.downloadexcelDataPengajuanApproval");
+
+Route.post("autologin", "master/UserController.autologin");
+Route.post("autologin_portal", "master/UserController.autologin_portal");
+
+Route.get("getReminder", "master/OtherController.getReminder");
+
+
+// Bukti Potong
+Route.post("saveUploadBuPot", "BuPot/BuktiPotongController.saveUploadBuPot");
+Route.get("getBuktiPotong", "BuPot/BuktiPotongController.getBuktiPotong");
+Route.get("getBuktiPotong2", "BuPot/BuktiPotongController.getBuktiPotong2");
+Route.get("downloadbupot", "BuPot/BuktiPotongController.downloadbupot");
+Route.post("deleteBuktiPotong", "BuPot/BuktiPotongController.deleteBuktiPotong");
+Route.post("getBuktiPotongWithFilter", "BuPot/BuktiPotongController.getBuktiPotongWithFilter");
+Route.get("getMonitoringBuPot", "BuPot/BuktiPotongController.getMonitoringBuPot");
+Route.post("getMonitoringBuPotWithFilter", "BuPot/BuktiPotongController.getMonitoringBuPotWithFilter");
+Route.get("getListVendor", "BuPot/BuktiPotongController.getListVendor");
+
+// Borongan
+Route.get("getBorongan", "Borongan/BoronganController.getBorongan");
+Route.get("getDetailListBorongan", "Borongan/BoronganController.getDetailListBorongan");
+Route.post("getBoronganWithFilter", "Borongan/BoronganController.getBoronganWithFilter");
+Route.post("saveListBorongan", "Borongan/BoronganController.saveListBorongan");
+Route.post("revisiListBorongan", "Borongan/BoronganController.revisiListBorongan");
+Route.post("sendEmailRevBorongan", "Borongan/BoronganController.sendEmailRevBorongan");
+Route.post("approveListBorongan", "Borongan/BoronganController.approveListBorongan");
+Route.post("sendEmailApproveBorongan", "Borongan/BoronganController.sendEmailApproveBorongan");
+
+// Monitor Pengiriman
+Route.get("getShipmentMonitor", "shipment/MonitorController.getMonitor");
+Route.get("getAdminSJ", "shipment/MonitorController.getAdminSJ");
+Route.get("getAdminSJDetail", "shipment/MonitorController.getAdminSJDetail");
+Route.get("getAdminMuat", "shipment/MonitorController.getAdminMuat");
+Route.get("getAdminMuatNgoro", "shipment/MonitorController.getAdminMuatNgoro");
+Route.get("getMSupplier", "shipment/MonitorController.getMSupplier");

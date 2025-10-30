@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.waves {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  display: flex;
+  z-index: 0 !important;
+}
+
+.login-page {
+  z-index: 99 !important;
+}
+
+.apexcharts-xaxis-label {
+  color: white !important;
+}
+
+.img-logo {
+  width: 100px !important;
+}
+
+.border-gradient {
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 5px;
+  border-image-source: linear-gradient(to left, #ffbf17, #2e495e);
+}

@@ -1,0 +1,5 @@
+User-agent: *
+allow: /*
+Disallow: 
+
+Sitemap: https://content-security-policy.com/sitemap.xml

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Surat Jalan</title>
+        <style>
+            table, th {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            td { 
+                white-space: pre; 
+            }
+            .page {
+                /* height: 286mm;*/
+                page-break-after: always;
+                border: 0px;
+            }
+        </style>
+    </head>
+    <body>
+        <%= //JSON.stringify(dataSJ) %>
+        <%= //console.log(JSON.stringify(qrcode[0])) %>
+        
+        <%
+            let array_bulan = new Array('Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'Nopember', 'Desember');
+            let today = new Date();
+            let d='', m = '', h='', i='';
+            if((today.getDate()) < 10){d='0'+(today.getDate());}else{d=(today.getDate());}
+            //if((today.getMonth()+1) < 10){m='0'+(today.getMonth()+1);}else{m=(today.getMonth()+1);}
+            let tglNow = d+' '+array_bulan[today.getMonth()]+' '+today.getFullYear();
+            if((today.getHours()) < 10){h='0'+(today.getHours());}else{h=(today.getHours());}
+            if((today.getMinutes()) < 10){i='0'+(today.getMinutes());}else{i=(today.getMinutes());}
+            let jamNow = h+':'+i;
+
+            let url_qad_web = 'https://apps-qad.dfr.co.id/qaddbc/';
+        %>
+
+        <% for(let i = 0; i < dataSJ.length; i++ ){ %>
+            <% let countRow = 0, minRow = 20 %>
+            <% for(let h = 0; h < detailSJ.length; h++ ){ %>
+                <% if(detailSJ[h].no_sj == dataSJ[i].no_sj) {  
+                    countRow++
+                } %>
+            <% } %>
+            <% let total = countRow, Page = 1, lastPage = Math.ceil(total / minRow) %>
+            <!-- <% //if(Page == lastPage) { %>
+                <div style="text-align: left; margin-top: -15px;">
+                    <%= //lastPage %>
+            <% //} else { %>
+                <div class="page" style="text-align: left; margin-top: -15px;"></div>
+                    <%= //lastPage %>
+            <% //} %> -->
+                    <!-- <table style="border:0; width: 100%; font-size: 14px;"> -->
+                        <!-- <tr>
+                            <th style="text-align: center; width:10%;">No. Urut <%= Page %></th>
+                            <th style="text-align: center; width:25%;">Kode</th>
+                            <th style="text-align: center; width:45%;">Jenis Barang</th>
+                            <th style="text-align: center; width:20%;">Jumlah</th>
+                        </tr> -->
+            <% let no = 1, counters = 1 %>
+            <% for(let j = 0; j < detailSJ.length; j++ ){ %>
+                <% if(detailSJ[j].no_sj == dataSJ[i].no_sj) { 
+                    if(counters-1 == 0){
+                %>
+                <% //if(Page == lastPage) { %>
+                    <!-- <div style="text-align: left; margin-top: -15px;"> -->
+                        <%= //Page+' === '+lastPage %>
+                <% //} else { %>
+                    <div class="page" style="text-align: left; margin-top: -15px;"></div>
+                        <%= //Page+' === page === '+lastPage %>
+                <% //} %>
+                    <table style="border:0; width: 100%; font-size: 14px;">
+                        <tr>
+                            <td><img height="50px" src="data:image/png;base64,<%- logo %>"></td>
+                        </tr>
+                    </table>
+                    <table style="border:0; width: 100%; font-size: 14px; text-align: center; margin-top: -20px;">
+                        <% if(dataSJ[i].no_sj == qrcode[i].no_sj) { %>
+                            <tr><td><img height="50px" src="<%- qrcode[i].qrcode %>"></td></tr>
+                        <% } %>
+                    </table>
+                    <table style="border:0; width: 100%; font-size: 14px; margin-top: -5px;">
+                        <tr>
+                            <td colspan="3" style="text-align: left;">F-PD-05</td>
+                            <td colspan="3" style="text-align: right;"><b>SURAT JALAN</b></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="background-color:#f2f2f2;">
+                            <td>Dikirim dengan</td><td>:</td><td><%- dataSJ[i].nama_ekspedisi %>/<%- dataSJ[i].nopol %></td><td>&nbsp;</td><td>&nbsp;</td><td>Hal. <%- Page %> dari <%- lastPage %></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="background-color:#f2f2f2;">
+                            <td>Ditujukan kepada</td><td>:</td><td><%- dataSJ[i].nama_ship_to %></td><td>No. SJ</td><td>:</td><td><%- dataSJ[i].no_sj %>/<%- dataSJ[i].si__chr01 %></td>
+                        </tr>
+                        <tr style="background-color:#f2f2f2;">
+                            <td>Pemesan</td><td>:</td><td><%- dataSJ[i].nama_agen %></td><td>No. SO</td><td>:</td><td><%- dataSJ[i].noso_dfr %>/Web: <%- dataSJ[i].noso_dfr %></td>
+                        </tr>
+                        <tr style="background-color:#f2f2f2;">
+                            <td>Dikirim ke</td><td>:</td><td><%- dataSJ[i].nama_ship_to %></td><td>No. Cont.</td><td>:</td><td><%- dataSJ[i].no_container %></td>
+                        </tr>
+                        <tr style="background-color:#f2f2f2;">
+                            <td>&nbsp;</td><td>&nbsp;</td><td><%- dataSJ[i].alamat %></td><td>No. Seal</td><td>:</td><td><%- dataSJ[i].no_seal %></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">Atas pesanan Saudara kami serahkan barang - barang sebagai berikut :</td>
+                        </tr>
+                    </table>
+                    <table style="border:0; width: 100%; font-size: 14px;">
+                        <tr>
+                            <th style="text-align: center; width:10%;">No. Urut</th>
+                            <th style="text-align: center; width:25%;">Kode</th>
+                            <th style="text-align: center; width:45%;">Jenis Barang</th>
+                            <th style="text-align: center; width:20%;">Jumlah</th>
+                        </tr>
+                <%        
+                    }
+                %>
+                        <tr>
+                            <td style="text-align:center; width: 10%; border-right: solid 1px; border-left: solid 1px; "><%- no %></td>
+                            <td style="text-align:center; width: 25%; border-right: solid 1px; border-left: solid 1px; "><%- detailSJ[j].kode_barang %></td>
+                            <td style="text-align:left; width: 45%; border-right: solid 1px; border-left: solid 1px; padding-left: 10px;"><%- detailSJ[j].nama_barang %></td>
+                            <td style="text-align:left; width: 20%; border-right: solid 1px; border-left: solid 1px; padding-left: 10px;"><%- detailSJ[j].qty %> <%- detailSJ[j].nama_satuan %></td>
+                        </tr>
+                    <%
+                    if(counters == minRow) {
+                        Page++
+                        counters = 0
+                        //no = j+1
+                    %>
+                        <tr>
+                            <td style="text-align:center; width: 10%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                            <td style="text-align:center; width: 25%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                            <td style="text-align:left; width: 45%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                            <td style="text-align:right; width: 20%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                        </tr>
+                        <tr><td>&nbsp;</td></tr>
+                    </table>
+                    <table style="border:0; width: 100%; font-size: 14px;">
+                        <tr>
+                            <td><b>Biaya Transport Ditanggung : <%- dataSJ[i].fob_point %></b></td>
+                        </tr>
+                        <tr>
+                            <td>Barang - barang yang sudah diterima tidak dapat dikembalikan</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                    </table>
+                    <table style="border:solid 0px; width: 100%; font-size: 14px;">
+                        <tr>
+                            <td colspan="3" style="text-align:left; width:50%;">Setelah Surat Jalan ditanda tangani, kami tidak menerima &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>komplain quantity (jumlah)</td>
+                            <td colspan="4" style="text-align:center; width:50%;"><%- ttdSJ[i].ttdSJ.length > 0 ? ttdSJ[i].ttdSJ[0].kota : '' %>, <%- tglNow %></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:left; width: 25%;">&nbsp;</td>
+                            <td colspan="4" style="text-align:center; width: 75%; border-top: solid 1px;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">&nbsp;&nbsp;&nbsp;</td>
+                            <td style="text-align: center;">Ekspedisi</td>
+                            <td style="text-align: center;">Penerima / Pembeli</td>
+                            <td style="text-align: center;">Delivery</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td style="width: 100px;">Putih asli</td><td style="width: 10px;">:</td><td>Penagihan</td><td>&nbsp;</td>
+                            <td rowspan="4" style="text-align: center;"><img src="data:image/png;base64,<%- logo_ekspedisi %>" width="85" height="35"></td>
+                            <td rowspan="4" style="text-align: center;"><% if(detailSJ[0].tgl_konfirm == null || detailSJ[0].tgl_konfirm == '' ){ %><% } else { %><img src="data:image/png;base64,<%- logo_penerima %>" width="85" height="35"><% } %></td>
+                            <td rowspan="4" style="text-align: center;"><% if(ttdSJ[i].ttdSJ.length > 0){%><img src="<%- url_qad_web %>file_ttdsj.php?token=<%= btoa(ttdSJ[i].ttdSJ[0].filename) %>" width="85" height="35" /><%- //ttdSJ[i].ttdSJ[0].filename %><% } else { %><% } %></td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Biru</td><td>:</td><td>Ekspedisi</td><td>&nbsp;</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Putih copy</td><td>:</td><td>Customer</td><td>&nbsp;</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Merah</td><td>:</td><td>Accounting</td><td>&nbsp;</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Kuning</td><td>:</td><td>Arsip</td><td>&nbsp;</td>
+                            <td style="text-align: center;"><%- detailSJ[0].sopir %></td>
+                            <td style="text-align: center;"><%- detailSJ[0].nama_penerima %></td>
+                            <td style="text-align: center;"><%- ttdSJ[i].ttdSJ.length > 0 ? ttdSJ[i].ttdSJ[0].nama_ttd : '&nbsp;' %></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:left; width: 25%;">&nbsp;</td>
+                            <td colspan="4" style="text-align:center; width: 75%; border-top: solid 1px;"></td>
+                        </tr>
+                    </table>
+                    <table style="border:solid 0px; width: 100%; font-size: 14px;">
+                        <tr>
+                            <td style="text-align:left;"><img src="data:image/png;base64,<%- logo_left %>" height="80px"/></td>
+                            <td style="text-align:center;"><img src="data:image/png;base64,<%- logo_center %>" height="80px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td style="text-align:center;"><img src="data:image/png;base64,<%- logo_right %>" height="80px"/>&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+                    <% } %>
+                    
+                    
+                    <% no++; counters++; %>
+                <% } %>
+            <% } %>
+
+            <% if( (no-1) < minRow) { %>
+                <% for(let k = no; k <= (minRow*Page); k++ ){ %>
+                    <tr>
+                        <td style="text-align:center; width: 10%; border-right: solid 1px; border-left: solid 1px;">&nbsp;</td><!-- <%- k %> -->
+                        <td style="text-align:center; width: 25%; border-right: solid 1px; border-left: solid 1px;">&nbsp;</td>
+                        <td style="text-align:left; width: 45%; border-right: solid 1px; border-left: solid 1px;">&nbsp;</td>
+                        <td style="text-align:right; width: 20%; border-right: solid 1px; border-left: solid 1px;">&nbsp;</td>
+                    </tr>
+                    <% if(k == minRow) { %>
+                        <tr>
+                            <td style="text-align:center; width: 10%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                            <td style="text-align:center; width: 25%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                            <td style="text-align:left; width: 45%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                            <td style="text-align:right; width: 20%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                        </tr>
+                        <tr><td>&nbsp;</td></tr>
+                    </table>
+                    <table style="border:0; width: 100%; font-size: 14px;">
+                        <tr>
+                            <td><b>Biaya Transport Ditanggung : <%- dataSJ[i].fob_point %></b></td>
+                        </tr>
+                        <tr>
+                            <td>Barang - barang yang sudah diterima tidak dapat dikembalikan</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                    </table>
+                    <table style="border:solid 0px; width: 100%; font-size: 14px;">
+                        <tr>
+                            <td colspan="3" style="text-align:left; width:50%;">Setelah Surat Jalan ditanda tangani, kami tidak menerima &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>komplain quantity (jumlah)</td>
+                            <td colspan="4" style="text-align:center; width:50%;"><%- ttdSJ[i].ttdSJ.length > 0 ? ttdSJ[i].ttdSJ[0].kota : '' %>, <%- tglNow %></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:left; width: 25%;">&nbsp;</td>
+                            <td colspan="4" style="text-align:center; width: 75%; border-top: solid 1px;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">&nbsp;&nbsp;&nbsp;</td>
+                            <td style="text-align: center;">Ekspedisi</td>
+                            <td style="text-align: center;">Penerima / Pembeli</td>
+                            <td style="text-align: center;">Delivery</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td style="width: 100px;">Putih asli</td><td style="width: 10px;">:</td><td>Penagihan</td><td>&nbsp;</td>
+                            <td rowspan="4" style="text-align: center;"><img src="data:image/png;base64,<%- logo_ekspedisi %>" width="85" height="35"></td>
+                            <td rowspan="4" style="text-align: center;"><% if(detailSJ[0].tgl_konfirm == null || detailSJ[0].tgl_konfirm == '' ){ %><% } else { %><img src="data:image/png;base64,<%- logo_penerima %>" width="85" height="35"><% } %></td>
+                            <td rowspan="4" style="text-align: center;"><% if(ttdSJ[i].ttdSJ.length > 0){%><img src="<%- url_qad_web %>file_ttdsj.php?token=<%= btoa(ttdSJ[i].ttdSJ[0].filename) %>" width="85" height="35" /><%- //ttdSJ[i].ttdSJ[0].filename %><% } else { %><% } %></td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Biru</td><td>:</td><td>Ekspedisi</td><td>&nbsp;</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Putih copy</td><td>:</td><td>Customer</td><td>&nbsp;</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Merah</td><td>:</td><td>Accounting</td><td>&nbsp;</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Kuning</td><td>:</td><td>Arsip</td><td>&nbsp;</td>
+                            <td style="text-align: center;"><%- detailSJ[0].sopir %></td>
+                            <td style="text-align: center;"><%- detailSJ[0].nama_penerima %></td>
+                            <td style="text-align: center;"><%- ttdSJ[i].ttdSJ.length > 0 ? ttdSJ[i].ttdSJ[0].nama_ttd : '&nbsp;' %></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:left; width: 25%;">&nbsp;</td>
+                            <td colspan="4" style="text-align:center; width: 75%; border-top: solid 1px;"></td>
+                        </tr>
+                    </table>
+                    <table style="border:solid 0px; width: 100%; font-size: 14px;">
+                        <tr>
+                            <td style="text-align:left;"><img src="data:image/png;base64,<%- logo_left %>" height="80px"/></td>
+                            <td style="text-align:center;"><img src="data:image/png;base64,<%- logo_center %>" height="80px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td style="text-align:center;"><img src="data:image/png;base64,<%- logo_right %>" height="80px"/>&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+                    <% } %>
+                <% } %>
+            <% } %>
+
+            <% if(no > minRow && no < minRow*Page){ %>
+                <% for(let k = no; k <= (minRow*Page); k++ ){ %>
+                    <% if (total > minRow) { %>
+                    <tr>
+                        <td style="text-align:center; width: 10%; border-right: solid 1px; border-left: solid 1px;">&nbsp;</td> <!--<%- k %>-->
+                        <td style="text-align:center; width: 25%; border-right: solid 1px; border-left: solid 1px;">&nbsp;</td>
+                        <td style="text-align:left; width: 45%; border-right: solid 1px; border-left: solid 1px;">&nbsp;</td>
+                        <td style="text-align:right; width: 20%; border-right: solid 1px; border-left: solid 1px;">&nbsp;</td>
+                    </tr>
+                    <% } %>
+                    <% if(k == minRow*Page) { %>
+                        <% if (total > minRow) { %>
+                        <tr>
+                            <td style="text-align:center; width: 10%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                            <td style="text-align:center; width: 25%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                            <td style="text-align:left; width: 45%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                            <td style="text-align:right; width: 20%; border-right: solid 1px; border-left: solid 1px; border-bottom: solid 1px;">&nbsp;</td>
+                        </tr>
+                        <tr><td>&nbsp;</td></tr>
+                    </table>
+                    <table style="border:0; width: 100%; font-size: 14px;">
+                        <tr>
+                            <td><b>Biaya Transport Ditanggung : <%- dataSJ[i].fob_point %></b></td>
+                        </tr>
+                        <tr>
+                            <td>Barang - barang yang sudah diterima tidak dapat dikembalikan</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                    </table>
+                    <table style="border:solid 0px; width: 100%; font-size: 14px;">
+                        <tr>
+                            <td colspan="3" style="text-align:left; width:50%;">Setelah Surat Jalan ditanda tangani, kami tidak menerima &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>komplain quantity (jumlah)</td>
+                            <td colspan="4" style="text-align:center; width:50%;"><%- ttdSJ[i].ttdSJ.length > 0 ? ttdSJ[i].ttdSJ[0].kota : '' %>, <%- tglNow %></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:left; width: 25%;">&nbsp;</td>
+                            <td colspan="4" style="text-align:center; width: 75%; border-top: solid 1px;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">&nbsp;&nbsp;&nbsp;</td>
+                            <td style="text-align: center;">Ekspedisi</td>
+                            <td style="text-align: center;">Penerima / Pembeli</td>
+                            <td style="text-align: center;">Delivery</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td style="width: 100px;">Putih asli</td><td style="width: 10px;">:</td><td>Penagihan</td><td>&nbsp;</td>
+                            <td rowspan="4" style="text-align: center;"><img src="data:image/png;base64,<%- logo_ekspedisi %>" width="85" height="35"></td>
+                            <td rowspan="4" style="text-align: center;"><% if(detailSJ[0].tgl_konfirm == null || detailSJ[0].tgl_konfirm == '' ){ %><% } else { %><img src="data:image/png;base64,<%- logo_penerima %>" width="85" height="35"><% } %></td>
+                            <td rowspan="4" style="text-align: center;"><% if(ttdSJ[i].ttdSJ.length > 0){%><img src="<%- url_qad_web %>file_ttdsj.php?token=<%= btoa(ttdSJ[i].ttdSJ[0].filename) %>" width="85" height="35" /><%- //ttdSJ[i].ttdSJ[0].filename %><% } else { %><% } %></td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Biru</td><td>:</td><td>Ekspedisi</td><td>&nbsp;</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Putih copy</td><td>:</td><td>Customer</td><td>&nbsp;</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Merah</td><td>:</td><td>Accounting</td><td>&nbsp;</td>
+                        </tr>
+                        <tr style="border:solid 0px; font-size: 14px;">
+                            <td>Kuning</td><td>:</td><td>Arsip</td><td>&nbsp;</td>
+                            <td style="text-align: center;"><%- detailSJ[0].sopir %></td>
+                            <td style="text-align: center;"><%- detailSJ[0].nama_penerima %></td>
+                            <td style="text-align: center;"><%- ttdSJ[i].ttdSJ.length > 0 ? ttdSJ[i].ttdSJ[0].nama_ttd : '&nbsp;' %></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:left; width: 25%;">&nbsp;</td>
+                            <td colspan="4" style="text-align:center; width: 75%; border-top: solid 1px;"></td>
+                        </tr>
+                    </table>
+                    <table style="border:solid 0px; width: 100%; font-size: 14px;">
+                        <tr>
+                            <td style="text-align:left;"><img src="data:image/png;base64,<%- logo_left %>" height="80px"/></td>
+                            <td style="text-align:center;"><img src="data:image/png;base64,<%- logo_center %>" height="80px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td style="text-align:center;"><img src="data:image/png;base64,<%- logo_right %>" height="80px"/>&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                    </table>
+                </div><% } %>
+                    <% } %>
+                <% } %>
+            <% } %>
+            <!-- </div> -->
+    <% } %>
+                <br/>
+                <div>
+                    <table style="border:0; width: 100%; font-size: 9px;">
+                        <tr>
+                            <th style="text-align: center; width:0%;">Tgl. SJ</th>
+                            <th style="text-align: center; width:0%;">No. Pol</th>
+                            <th style="text-align: center; width:0%;">PO Number</th>
+                            <th style="text-align: center; width:0%;">Rupiah</th>
+                            <th style="text-align: center; width:0%;">No. Surat Jalan</th>
+                            <th style="text-align: center; width:0%;">Item</th>
+                            <th style="text-align: center; width:0%;">Qty</th>
+                            <th style="text-align: center; width:0%;">Satuan</th>
+                            <th style="text-align: center; width:0%;">Tonase</th>
+                            <th style="text-align: center; width:0%;">Keterangan</th>
+                            <th style="text-align: center; width:0%;">Foto</th>
+                        </tr>
+                        <%= //JSON.stringify(dataRekap) %>
+                        <% /*for(let z=0; z<(dataRekap.length); z++) { %>
+                        <tr>
+                            <td style="text-align:center; width:8%;"><%- dataRekap[z].tgl_sj_conv %></td>
+                            <td style="text-align:center; width:10%;"><%- dataRekap[z].nopol %></td>
+                            <td style="text-align:center; width:10%;"><%- dataRekap[z].no_po %></td>
+                            <td style="text-align:right; width:10%;"><%- (dataRekap[z].po_cost).toLocaleString() %></td>
+                            <td style="text-align:center; width:10%;"><%- dataRekap[z].no_sj %></td>
+                            <td style="text-align:left; width:10%;"><%- dataRekap[z].nama_barang %></td>
+                            <td style="text-align:right; width:10%;"><%- dataRekap[z].qty %></td>
+                            <td style="text-align:center; width:5%;"><%- dataRekap[z].satuan %></td>
+                            <td style="text-align:right; width:10%;"><%- dataRekap[z].tonase %></td>
+                            <td style="text-align:center; width:10%;"><%- dataRekap[z].jenis_komplain %></td>
+                            <td style="text-align:center; width:7%;"><%- dataRekap[z].path_foto %></td>
+                        </tr>
+                        <% }*/ %>
+                        <% for(let z=0; z<(dataRekap.length); z++) { %>
+                            <% for(let z1=0; z1<(dataRekap[z].length); z1++) { %>
+                        <tr>
+                            <td style="text-align:center; width:8%;"><%- dataRekap[z][z1].tgl_sj_conv %></td>
+                            <td style="text-align:center; width:10%;"><%- dataRekap[z][z1].nopol %></td>
+                            <td style="text-align:center; width:10%;"><%- dataRekap[z][z1].no_po %></td>
+                            <td style="text-align:right; width:10%;"><%- (dataRekap[z][z1].po_cost).toLocaleString() %></td>
+                            <td style="text-align:center; width:10%;"><%- dataRekap[z][z1].no_sj %></td>
+                            <td style="text-align:left; width:10%;"><%- dataRekap[z][z1].nama_barang %></td>
+                            <td style="text-align:right; width:10%;"><%- dataRekap[z][z1].qty %></td>
+                            <td style="text-align:center; width:5%;"><%- dataRekap[z][z1].satuan %></td>
+                            <td style="text-align:right; width:10%;"><%- dataRekap[z][z1].tonase %></td>
+                            <td style="text-align:center; width:10%;"><%- dataRekap[z][z1].jenis_komplain %></td>
+                            <td style="text-align:center; width:7%;"><%- (dataRekap[z][z1].path_foto == '' || dataRekap[z][z1].path_foto == null) ?  '' : 'Ada' %></td>
+                        </tr>
+                            <% } %>
+                        <% } %>                        
+                    </table>
+                </div>
+    </body>
+</html>
